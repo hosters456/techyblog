@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import CommentSection from '@/components/CommentSection';
 
 async function getPost(slug) {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
@@ -35,8 +36,8 @@ export default async function PostPage({ params }) {
                 Back to all posts
             </Link>
 
-            <header className="mb-12">
-                <div className="flex flex-wrap gap-2 mb-6">
+            <header className="mb-12 text-center md:text-left">
+                <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
                     {post.tags.map((tag) => (
                         <span
                             key={tag}
@@ -51,38 +52,28 @@ export default async function PostPage({ params }) {
                     {post.title}
                 </h1>
 
-                <div className="flex flex-wrap items-center text-gray-600 dark:text-gray-400 text-sm gap-6 border-y border-gray-200 dark:border-gray-800 py-6">
+                <div className="flex flex-wrap items-center justify-center md:justify-start text-gray-600 dark:text-gray-400 text-sm gap-6 border-y border-gray-100 dark:border-gray-900 py-6">
                     <div className="flex items-center space-x-2">
                         <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
                             {post.author.charAt(0)}
                         </div>
-                        <span className="font-medium text-gray-900 dark:text-white">{post.author}</span>
+                        <span className="font-bold text-gray-900 dark:text-white">{post.author}</span>
                     </div>
 
                     <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4" />
-                        <span>{formattedDate}</span>
+                        <span className="font-medium">{formattedDate}</span>
                     </div>
                 </div>
             </header>
 
             <div
-                className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-2xl"
+                className="prose prose-lg md:prose-xl dark:prose-invert max-w-none prose-headings:font-black prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-3xl prose-pre:bg-gray-900 dark:prose-pre:bg-black border-b border-gray-50 dark:border-gray-900 pb-16"
                 dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
-            <section className="mt-16 pt-16 border-t border-gray-200 dark:border-gray-800 text-center">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Enjoyed this article?</h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-8">
-                    Stay tuned for more beginner-friendly programming guides.
-                </p>
-                <Link
-                    href="/"
-                    className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-blue-500/20"
-                >
-                    Explore More Posts
-                </Link>
-            </section>
+            {/* Commenting System */}
+            <CommentSection postSlug={slug} />
         </article>
     );
 }
