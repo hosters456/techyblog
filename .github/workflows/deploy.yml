@@ -46,5 +46,5 @@ jobs:
             yarn build
 
             # Restart app with PM2
-            pm2 restart techyblog || pm2 start yarn --name "techyblog" -- start
+            pm2 restart techyblog || pm2 start ecosystem.config.js
             pm2 save
