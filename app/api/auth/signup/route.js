@@ -12,7 +12,7 @@ export async function POST(request) {
         // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return NextResponse.json({ error: 'User already exists with this email.' }, { status: 400 });
+            return NextResponse.json({ error: 'User already exists with this email' }, { status: 400 });
         }
 
         // Create user
