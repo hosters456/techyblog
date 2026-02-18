@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         checkUser();
     }, []);
 
-    const login = async (email, password) => {
+    const login = async (email, password, redirect = true) => {
         const res = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -38,14 +38,14 @@ export const AuthProvider = ({ children }) => {
         const data = await res.json();
         if (res.ok) {
             setUser(data.user);
-            router.push('/');
-            return { success: true };
+            if (redirect) router.push('/');
+            return { success: true, user: data.user };
         } else {
             return { success: false, error: data.error };
         }
     };
 
-    const signup = async (name, email, password) => {
+    const signup = async (name, email, password, redirect = true) => {
         const res = await fetch('/api/auth/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -55,8 +55,8 @@ export const AuthProvider = ({ children }) => {
         const data = await res.json();
         if (res.ok) {
             setUser(data.user);
-            router.push('/');
-            return { success: true };
+            if (redirect) router.push('/');
+            return { success: true, user: data.user };
         } else {
             return { success: false, error: data.error };
         }
