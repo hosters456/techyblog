@@ -1,6 +1,7 @@
 import PostCard from '@/components/PostCard';
 import SearchBar from '@/components/SearchBar';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 async function getPosts(searchParams) {
   const query = new URLSearchParams(searchParams).toString();
@@ -32,14 +33,16 @@ export default async function Home({ searchParams }) {
       </header>
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
-        <SearchBar />
+        <Suspense fallback={<div className="w-full max-w-md h-10 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-xl" />}>
+          <SearchBar />
+        </Suspense>
 
         <div className="flex flex-wrap gap-2">
           <Link
             href="/"
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!currentTag
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
           >
             All
@@ -49,8 +52,8 @@ export default async function Home({ searchParams }) {
               key={tag}
               href={`/?tag=${tag}`}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentTag === tag
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                 }`}
             >
               {tag}

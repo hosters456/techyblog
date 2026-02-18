@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
 import SearchBar from './SearchBar';
@@ -28,7 +28,9 @@ const Navbar = () => {
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <SearchBar />
+                        <Suspense fallback={<div className="w-48 h-10 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-xl" />}>
+                            <SearchBar />
+                        </Suspense>
                         <div className="flex items-center space-x-6">
                             <Link href="/" className="text-sm font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</Link>
 
