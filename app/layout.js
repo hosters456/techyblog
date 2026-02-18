@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "BlogyTech - Your Programming Teacher",
-  description: "BlogyTech is a learning site about programming and technology",
+  title: "TechyBlog - Your Programming guide",
+  description: "TechyBlog is a learning site about programming and technology",
 };
 
 export default function RootLayout({ children }) {

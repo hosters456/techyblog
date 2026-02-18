@@ -1,0 +1,45 @@
+name: Deploy TechyBlog
+
+on:
+  push:
+    branches:
+      - main   # Deploy when you push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
+        run: yarn install
+
+      # 4️⃣ Build the Next.js app
+      - name: Build app
+        run: yarn build
+
+      # 5️⃣ Deploy to VPS via SSH
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          port: ${{ secrets.VPS_PORT }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            cd /root/techyblog
+            git pull origin main
+            yarn install
+            yarn build
+            pm2 restart techyblog || pm2 start yarn --name "techyblog" -- start
+            pm2 save
