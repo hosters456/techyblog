@@ -3,43 +3,48 @@ name: Deploy TechyBlog
 on:
   push:
     branches:
-      - main   # Deploy when you push to the main branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # 1️⃣ Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2️⃣ Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      # 3️⃣ Install dependencies
-      - name: Install dependencies
-        run: yarn install
-
-      # 4️⃣ Build the Next.js app
-      - name: Build app
-        run: yarn build
-
-      # 5️⃣ Deploy to VPS via SSH
-      - name: Deploy to VPS
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.8
         with:
-          host: ${{ secrets.VPS_HOST }}
-          port: ${{ secrets.VPS_PORT }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_KEY }}
+          host: ${{ secrets.VPS_HOST }}       # e.g., 94.103.163.74
+          port: ${{ secrets.VPS_PORT }}       # e.g., 2274
+          username: ${{ secrets.VPS_USER }}   # e.g., root
+          key: ${{ secrets.VPS_KEY }}         # private key
           script: |
-            cd /root/techyblog
+            # Navigate to project folder
+            cd /root/techyblog || mkdir -p /root/techyblog && cd /root/techyblog
+
+            # Check if NVM is installed
+            if [ ! -s "$HOME/.nvm/nvm.sh" ]; then
+              echo "Installing NVM..."
+              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.6/install.sh | bash
+            fi
+
+            # Load NVM
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            # Install or use Node 20
+            nvm install 20
+            nvm use 20
+            nvm alias default 20
+
+            # Pull latest code
             git pull origin main
+
+            # Install dependencies & build
             yarn install
             yarn build
+
+            # Restart app with PM2
             pm2 restart techyblog || pm2 start yarn --name "techyblog" -- start
             pm2 save
