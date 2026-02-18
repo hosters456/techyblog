@@ -11,10 +11,24 @@ export const AdminProvider = ({ children }) => {
     const router = useRouter();
 
     useEffect(() => {
-        const checkAdmin = () => {
+        const checkAdmin = async () => {
             const adminSecret = localStorage.getItem('admin_secret');
             if (adminSecret) {
-                setIsAdmin(true);
+                try {
+                    const res = await fetch('/api/admin/verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ secret: adminSecret }),
+                    });
+                    if (res.ok) {
+                        setIsAdmin(true);
+                    } else {
+                        localStorage.removeItem('admin_secret');
+                        setIsAdmin(false);
+                    }
+                } catch (err) {
+                    setIsAdmin(false);
+                }
             } else {
                 setIsAdmin(false);
             }

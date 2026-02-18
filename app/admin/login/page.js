@@ -9,13 +9,31 @@ export default function AdminLoginPage() {
     const [error, setError] = useState('');
     const { login } = useAdmin();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+
         if (!secret) {
             setError('Please enter the admin secret.');
             return;
         }
-        login(secret);
+
+        try {
+            const res = await fetch('/api/admin/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ secret }),
+            });
+
+            if (res.ok) {
+                login(secret);
+            } else {
+                setError('Incorrect Admin Secret. Please try again.');
+                localStorage.removeItem('admin_secret');
+            }
+        } catch (err) {
+            setError('Connection error. Please try again.');
+        }
     };
 
     return (
