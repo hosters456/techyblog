@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import ThemeToggle from './ThemeToggle';
-import SearchBar from './SearchBar';
 import { Menu, X, Code2, User as UserIcon, LogOut, ChevronDown, UserCircle2 } from 'lucide-react';
 import { useAuth } from './AuthContext';
 
@@ -28,12 +27,6 @@ const Navbar = () => {
 
                     {/* Nav Actions */}
                     <div className="flex items-center space-x-3 md:space-x-8">
-                        {/* Desktop Search */}
-                        <div className="hidden md:block">
-                            <Suspense fallback={<div className="w-48 h-10 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-xl" />}>
-                                <SearchBar />
-                            </Suspense>
-                        </div>
 
                         {/* Profile & Links */}
                         <div className="flex items-center space-x-3 md:space-x-6">
