@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Edit2, Trash2, ExternalLink, MoreVertical, Plus, Post as PostIcon } from 'lucide-react';
+import { Edit2, Trash2, ExternalLink, MoreVertical, Plus, Post as PostIcon, MessageSquare } from 'lucide-react';
 import { useAdmin } from '@/components/AdminContext';
 
 export default function AdminDashboard() {
@@ -112,6 +112,13 @@ export default function AdminDashboard() {
                                     </td>
                                     <td className="px-6 py-5 text-right">
                                         <div className="flex items-center justify-end space-x-2">
+                                            <Link
+                                                href={`/admin/comments/${post.slug}`}
+                                                className="p-2 text-gray-400 hover:text-green-600 transition-colors"
+                                                title="View Comments"
+                                            >
+                                                <MessageSquare className="w-4 h-4" />
+                                            </Link>
                                             <Link
                                                 href={`/posts/${post.slug}`}
                                                 target="_blank"

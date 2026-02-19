@@ -52,3 +52,27 @@ export async function POST(request, { params }) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
+
+export async function DELETE(request, { params }) {
+    try {
+        await dbConnect();
+        const secret = request.headers.get('x-admin-secret');
+        if (secret !== process.env.ADMIN_SECRET) {
+            return NextResponse.json({ error: 'Unauthorized admin access.' }, { status: 401 });
+        }
+
+        const { commentId } = await request.json();
+        if (!commentId) {
+            return NextResponse.json({ error: 'Comment ID is required.' }, { status: 400 });
+        }
+
+        const result = await Comment.findByIdAndDelete(commentId);
+        if (!result) {
+            return NextResponse.json({ error: 'Comment not found.' }, { status: 404 });
+        }
+
+        return NextResponse.json({ message: 'Comment deleted successfully.' });
+    } catch (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}

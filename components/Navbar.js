@@ -26,10 +26,18 @@ const Navbar = () => {
                         </span>
                     </Link>
 
-                    {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center space-x-8">
-                        <div className="flex items-center space-x-6">
-                            <Link href="/" className="text-sm font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</Link>
+                    {/* Nav Actions */}
+                    <div className="flex items-center space-x-3 md:space-x-8">
+                        {/* Desktop Search */}
+                        <div className="hidden md:block">
+                            <Suspense fallback={<div className="w-48 h-10 bg-gray-100 dark:bg-gray-800 animate-pulse rounded-xl" />}>
+                                <SearchBar />
+                            </Suspense>
+                        </div>
+
+                        {/* Profile & Links */}
+                        <div className="flex items-center space-x-3 md:space-x-6">
+                            <Link href="/" className="hidden md:block text-sm font-bold text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</Link>
 
                             <div className="relative">
                                 <button
@@ -39,7 +47,7 @@ const Navbar = () => {
                                     <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-[10px] text-white font-black overflow-hidden shadow-sm">
                                         {user ? user.name.charAt(0).toUpperCase() : <UserCircle2 className="w-5 h-5" />}
                                     </div>
-                                    {user && <span className="mr-1">{user.name.split(' ')[0]}</span>}
+                                    {user && <span className="hidden sm:inline mr-1">{user.name.split(' ')[0]}</span>}
                                     <ChevronDown className={`w-4 h-4 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
                                 </button>
 
@@ -100,7 +108,7 @@ const Navbar = () => {
                                 )}
                             </div>
 
-                            <div className="h-6 w-px bg-gray-100 dark:bg-gray-800" />
+                            <div className="hidden md:block h-6 w-px bg-gray-100 dark:bg-gray-800" />
                             <ThemeToggle />
                         </div>
                     </div>
