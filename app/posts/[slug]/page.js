@@ -12,6 +12,34 @@ async function getPost(slug) {
     return res.json();
 }
 
+export async function generateMetadata({ params }) {
+    const { slug } = await params;
+    const post = await getPost(slug);
+
+    if (!post) return { title: 'Post Not Found' };
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
+    return {
+        title: `${post.title} | TechyBlog`,
+        description: post.excerpt,
+        openGraph: {
+            title: post.title,
+            description: post.excerpt,
+            url: `${siteUrl}/posts/${slug}`,
+            type: 'article',
+            publishedTime: post.createdAt,
+            authors: [post.author],
+            tags: post.tags,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.title,
+            description: post.excerpt,
+        },
+    };
+}
+
 export default async function PostPage({ params }) {
     const { slug } = await params;
     const post = await getPost(slug);
