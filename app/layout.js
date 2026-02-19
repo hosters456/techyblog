@@ -13,6 +13,9 @@ const inter = Inter({
 export const metadata = {
   title: 'TechyBlog - Programming for Beginners',
   description: 'Learn programming basics with TechyBlog. Clear, concise, and beginner-friendly guides.',
+  other: {
+    '924d5f05cb83fcbf71c10fb12d0d0ae510b5abe5': '924d5f05cb83fcbf71c10fb12d0d0ae510b5abe5',
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -23,7 +26,7 @@ export default function RootLayout({ children }) {
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
+          enableColorScheme={false}
         >
           <AuthProvider>
             <div className="flex flex-col min-h-screen">

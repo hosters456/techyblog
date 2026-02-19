@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --font-sans: var(--font-inter);
 }
 
-body {
-  @apply antialiased;
+@layer base {
+  html {
+    @apply antialiased transition-colors duration-300;
+  }
 }
