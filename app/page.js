@@ -2,6 +2,7 @@ import PostCard from '@/components/PostCard';
 import SearchBar from '@/components/SearchBar';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import AdZone from '@/components/AdZone';
 
 async function getPosts(searchParams) {
   const query = new URLSearchParams(searchParams).toString();
@@ -62,19 +63,31 @@ export default async function Home({ searchParams }) {
         </div>
       </div>
 
-      {posts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map((post) => (
-            <PostCard key={post._id} post={post} />
-          ))}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+        <div className="lg:col-span-3">
+          {posts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {posts.map((post) => (
+                <PostCard key={post._id} post={post} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-gray-50 dark:bg-gray-900/50 rounded-3xl border border-dashed border-gray-300 dark:border-gray-700">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No posts found</h3>
+              <p className="text-gray-600 dark:text-gray-400">Try adjusting your search or filters.</p>
+              <Link href="/" className="mt-4 inline-block text-blue-600 hover:underline">Clear all filters</Link>
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="text-center py-20 bg-gray-50 dark:bg-gray-900/50 rounded-3xl border border-dashed border-gray-300 dark:border-gray-700">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No posts found</h3>
-          <p className="text-gray-600 dark:text-gray-400">Try adjusting your search or filters.</p>
-          <Link href="/" className="mt-4 inline-block text-blue-600 hover:underline">Clear all filters</Link>
-        </div>
-      )}
+
+        {/* Sidebar Ad Slot */}
+        <aside className="lg:col-span-1 space-y-8">
+          <div className="sticky top-24">
+            <h4 className="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">Advertisement</h4>
+            <AdZone id="sidebar-ad-zone" className="bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-800" />
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

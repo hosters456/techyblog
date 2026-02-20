@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider } from '@/components/AuthContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AdZone from '@/components/AdZone';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -84,6 +85,10 @@ export default function RootLayout({ children }) {
               <main className="flex-grow">
                 {children}
               </main>
+              {/* Bottom Ad Slot */}
+              <div className="container mx-auto px-4 mt-8">
+                <AdZone id="bottom-ad-zone" />
+              </div>
               <Footer />
             </div>
           </AuthProvider>

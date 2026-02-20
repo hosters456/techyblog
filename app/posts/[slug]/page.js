@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Calendar, User, Tag, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import CommentSection from '@/components/CommentSection';
+import AdZone from '@/components/AdZone';
 
 async function getPost(slug) {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
@@ -95,13 +96,29 @@ export default async function PostPage({ params }) {
                 </div>
             </header>
 
-            <div
-                className="prose prose-lg md:prose-xl dark:prose-invert max-w-none prose-headings:font-black prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-3xl prose-pre:bg-gray-900 dark:prose-pre:bg-black border-b border-gray-50 dark:border-gray-900 pb-16"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mt-12">
+                <div className="lg:col-span-3">
+                    <div
+                        className="prose prose-lg md:prose-xl dark:prose-invert max-w-none prose-headings:font-black prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-3xl prose-pre:bg-gray-900 dark:prose-pre:bg-black border-b border-gray-50 dark:border-gray-900 pb-16"
+                        dangerouslySetInnerHTML={{ __html: post.content }}
+                    />
 
-            {/* Commenting System */}
-            <CommentSection postSlug={slug} />
+                    {/* Commenting System */}
+                    <div className="mt-16">
+                        <CommentSection postSlug={slug} />
+                    </div>
+                </div>
+
+                {/* Sidebar Ad Slot */}
+                <aside className="lg:col-span-1">
+                    <div className="sticky top-24 space-y-8">
+                        <div>
+                            <h4 className="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 text-center md:text-left">Advertisement</h4>
+                            <AdZone id="sidebar-ad-zone-post" className="bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-800" />
+                        </div>
+                    </div>
+                </aside>
+            </div>
         </article>
     );
 }
