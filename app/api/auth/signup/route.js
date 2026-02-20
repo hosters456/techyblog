@@ -20,8 +20,14 @@ export async function POST(request) {
         }
 
         // Create user
-        console.log('⏳ Hashing password and saving user...');
-        const user = await User.create({ name, email, password });
+        console.log('⏳ Hashing password manually in route...');
+        const b = (await import('bcryptjs')).default || (await import('bcryptjs'));
+        const salt = await b.genSalt(10);
+        const hashedPassword = await b.hash(password, salt);
+        console.log('✅ Password hashed successfully');
+
+        console.log('⏳ Saving user to database...');
+        const user = await User.create({ name, email, password: hashedPassword });
         console.log('✅ User created successfully');
 
         // Generate JWT

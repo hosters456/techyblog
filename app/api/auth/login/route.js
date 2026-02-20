@@ -16,16 +16,28 @@ export async function POST(request) {
         }
 
         // Check password
+        console.log(`🔐 Verifying password for user: ${email}`);
+        if (typeof user.comparePassword !== 'function') {
+            throw new Error('user.comparePassword is not a function - model recreation might be needed');
+        }
+
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
+            console.log('❌ Invalid credentials (password mismatch)');
             return NextResponse.json({ error: 'Invalid credentials.' }, { status: 401 });
         }
 
         // Generate JWT
+        console.log('🔐 Generating JWT...');
         const token = await signJWT({ id: user._id, name: user.name, email: user.email, role: user.role });
 
         // Set cookie
+        console.log('🍪 Setting authentication cookie...');
         const cookieStore = await cookies();
+        if (typeof cookieStore.set !== 'function') {
+            throw new Error('cookieStore.set is not a function - check next/headers');
+        }
+
         cookieStore.set('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',

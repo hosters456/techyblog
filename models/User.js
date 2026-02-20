@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-// Some environments prefer named imports for bcryptjs
-const { genSalt, hash, compare } = bcrypt;
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -18,7 +16,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide a password.'],
         minlength: [6, 'Password must be at least 6 characters.'],
-        select: false, // Don't return password by default
+        select: false,
     },
     role: {
         type: String,
@@ -29,23 +27,16 @@ const UserSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-// Hash password before saving
-UserSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) {
-        return next();
-    }
-    try {
-        const salt = await genSalt(10);
-        this.password = await hash(this.password, salt);
-        next();
-    } catch (error) {
-        next(error);
-    }
-});
+// No pre-save hook here to avoid Next.js bundling/ESM issues.
+// Hashing is now handled manually in API routes (signup, add-user).
 
-// Compare password method
 UserSchema.methods.comparePassword = async function (candidatePassword) {
-    return await compare(candidatePassword, this.password);
+    // Robustly handle bcryptjs import differences
+    const b = bcrypt.default || bcrypt;
+    if (typeof b.compare !== 'function') {
+        throw new Error('bcrypt.compare is not a function - check bcryptjs import/installation');
+    }
+    return await b.compare(candidatePassword, this.password);
 };
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);
