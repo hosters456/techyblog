@@ -13,16 +13,7 @@ export default function AdZone({ id, className = "" }) {
 
         const script = document.createElement('script');
         script.innerHTML = `
-      (function(ftzevfo){
-      var d = document,
-          s = d.createElement('script'),
-          l = d.scripts[d.scripts.length - 1];
-      s.settings = ftzevfo || {};
-      s.src = "\\/\\/illiterate-being.com\\/bjX.Vwsld\\/GulF0kY\\/W_cE\\/aejme9EuDZZUtlUkBP\\/TPYx4JMPTIQx1\\/NGDJkUtsNMj-gdxYNgD\\/U\\/1JMWw_";
-      s.async = true;
-      s.referrerPolicy = 'no-referrer-when-downgrade';
-      l.parentNode.insertBefore(s, l);
-      })({})
+      <a href="https://hilltopads.com/?ref=364851"><img src="//static.hilltopads.com/other/banners/pub/huge_income/728x90.gif?v=1771508868"></a>
     `;
 
         adRef.current.appendChild(script);
