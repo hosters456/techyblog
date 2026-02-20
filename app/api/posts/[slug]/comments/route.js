@@ -57,10 +57,12 @@ export async function POST(request, { params }) {
         }
 
         console.log('⏳ Creating comment in DB...');
+        const userId = typeof user.id === 'string' ? user.id : (user.id?.toString() || user.id);
+
         const comment = await Comment.create({
             content,
             post: post._id,
-            user: user.id,
+            user: userId,
             userName: user.name,
         });
 

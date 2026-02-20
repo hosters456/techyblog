@@ -29,7 +29,7 @@ export async function POST(request) {
 
         // Generate JWT
         console.log('🔐 Generating JWT...');
-        const token = await signJWT({ id: user._id, name: user.name, email: user.email, role: user.role });
+        const token = await signJWT({ id: user._id.toString(), name: user.name, email: user.email, role: user.role });
 
         // Set cookie
         console.log('🍪 Setting authentication cookie...');
@@ -48,7 +48,7 @@ export async function POST(request) {
 
         return NextResponse.json({
             success: true,
-            user: { id: user._id, name: user.name, email: user.email, role: user.role }
+            user: { id: user._id.toString(), name: user.name, email: user.email, role: user.role }
         });
 
     } catch (error) {
