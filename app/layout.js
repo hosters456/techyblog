@@ -90,20 +90,11 @@ export default function RootLayout({ children }) {
         </ThemeProvider>
 
         {/* Ad Network Script */}
-        <Script id="ad-network-script" strategy="afterInteractive">
-          {`
-            (function(cjw){
-            var d = document,
-                s = d.createElement('script'),
-                l = d.scripts[d.scripts.length - 1];
-            s.settings = cjw || {};
-            s.src = "\\/\\/elderlygoal.com\\/c\\/DZ9Y6Pb.2s5\\/lmSdWgQb9oN\\/jJgAxFNRD\\/Qm4vNISM0A2ROnDgEl0_NHDCg-5K";
-            s.async = true;
-            s.referrerPolicy = 'no-referrer-when-downgrade';
-            l.parentNode.insertBefore(s, l);
-            })({})
-          `}
-        </Script>
+        <Script
+          id="ad-network-script"
+          src="/ad-script.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
